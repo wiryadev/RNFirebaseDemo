@@ -4,7 +4,7 @@ import { Alert, View } from 'react-native';
 import { ActivityIndicator, Appbar, Button, TextInput, useTheme } from 'react-native-paper';
 import Spacer from '../../components/Spacer';
 
-const SignInScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation }) => {
 
   const theme = useTheme()
 
@@ -13,12 +13,15 @@ const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const onSignIn = () => {
+  const onSignUp = () => {
     setLoading(true)
     auth()
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        navigation.replace('HomeScreen')
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'HomeScreen' }]
+        })
       })
       .catch(error => {
         let message = 'Unknown Error'
@@ -43,7 +46,7 @@ const SignInScreen = ({ navigation }) => {
       <Appbar.Header
         style={{ backgroundColor: theme.colors.primaryContainer }}
       >
-        <Appbar.Content title="Sign In" />
+        <Appbar.Content title="Sign Up" />
       </Appbar.Header>
       <View style={{ paddingHorizontal: 24, paddingTop: 32, }}>
         <TextInput
@@ -70,21 +73,14 @@ const SignInScreen = ({ navigation }) => {
           />
           : <Button
             mode="contained-tonal"
-            onPress={onSignIn}
+            onPress={onSignUp}
           >
-            Sign In
+            Sign Up
           </Button>
         }
-        <Spacer height={16} />
-        <Button
-          mode="text"
-          onPress={() => navigation.navigate('SignUpScreen')}
-        >
-          Sign Up
-        </Button>
       </View>
     </View>
   )
 }
 
-export default SignInScreen
+export default SignUpScreen
