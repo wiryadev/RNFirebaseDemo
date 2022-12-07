@@ -2,7 +2,7 @@ import auth from '@react-native-firebase/auth';
 import React, { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { ActivityIndicator, Appbar, Button, TextInput, useTheme } from 'react-native-paper';
-import Spacer from '../../components/Spacer';
+import Spacer from '../../../components/Spacer';
 
 const SignInScreen = ({ navigation }) => {
 
