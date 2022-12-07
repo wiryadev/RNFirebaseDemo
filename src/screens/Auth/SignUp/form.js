@@ -25,39 +25,48 @@ const Form = ({
   return (
     <View>
       <TextField
-          name="email"
-          label="Email"
-          autoCapitalize='none'
-          autoCorrect={false}
-          keyboardType='email-address'
-          control={control}
+        name="name"
+        label="Name"
+        autoCapitalize='none'
+        autoCorrect={false}
+        keyboardType='email-address'
+        control={control}
+      />
+      <Spacer height={16} />
+      <TextField
+        name="email"
+        label="Email"
+        autoCapitalize='none'
+        autoCorrect={false}
+        keyboardType='email-address'
+        control={control}
+      />
+      <Spacer height={16} />
+      <TextField
+        name="password"
+        label="Password"
+        secureTextEntry
+        control={control}
+      />
+      <Spacer height={16} />
+      <TextField
+        name="confirm_password"
+        label="Confirm Password"
+        secureTextEntry
+        control={control}
+      />
+      <Spacer height={48} />
+      {isLoading
+        ? <ActivityIndicator
+          animating
         />
-        <Spacer height={16} />
-        <TextField
-          name="password"
-          label="Password"
-          secureTextEntry
-          control={control}
-        />
-        <Spacer height={16} />
-        <TextField
-          name="confirm_password"
-          label="Confirm Password"
-          secureTextEntry
-          control={control}
-        />
-        <Spacer height={48} />
-        {isLoading
-          ? <ActivityIndicator
-            animating
-          />
-          : <Button
-            mode="contained-tonal"
-            onPress={handleSubmit(onSubmit)}
-          >
-            {buttonLabel}
-          </Button>
-        }
+        : <Button
+          mode="contained-tonal"
+          onPress={handleSubmit(onSubmit)}
+        >
+          {buttonLabel}
+        </Button>
+      }
     </View>
   )
 }

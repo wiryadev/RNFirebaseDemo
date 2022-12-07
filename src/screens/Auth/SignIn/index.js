@@ -32,11 +32,10 @@ const SignInScreen = ({ navigation }) => {
         if (error.code === 'auth/invalid-email') {
           message = 'That email address is invalid!'
         }
-
-        setLoading(false)
         Alert.alert(message)
         console.error(error);
       })
+      .finally(() => setLoading(false))
   }
 
   return (

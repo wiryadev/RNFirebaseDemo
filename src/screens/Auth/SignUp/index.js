@@ -2,6 +2,7 @@ import auth from '@react-native-firebase/auth';
 import React, { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
+import fireDb from '../../../data/Database';
 import Form from './form';
 
 const SignUpScreen = ({ navigation }) => {
@@ -19,11 +20,22 @@ const SignUpScreen = ({ navigation }) => {
     setLoading(true)
     auth()
       .createUserWithEmailAndPassword(values.email, values.password)
-      .then(() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'HomeScreen' }]
-        })
+      .then((res) => {
+        fireDb
+          .ref(`/users/${res.user.uid}`)
+          .set({
+            name: values.name,
+            email: res.user.email,
+          })
+          .then(() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'HomeScreen' }]
+            })
+          })
+          .catch(error => {
+            Alert.alert(error.message)
+          })
       })
       .catch(error => {
         let message = 'Unknown Error'
@@ -35,10 +47,10 @@ const SignUpScreen = ({ navigation }) => {
           message = 'That email address is invalid!'
         }
 
-        setLoading(false)
         Alert.alert(message)
         console.error(error);
       })
+      .finally(() => setLoading(false))
   }
 
   return (
