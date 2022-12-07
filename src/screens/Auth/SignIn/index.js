@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Appbar, Button, useTheme } from 'react-native-paper';
 import Spacer from '../../../components/Spacer';
-import Form from '../form';
+import Form from '../SignIn/form';
 
 const SignInScreen = ({ navigation }) => {
 
