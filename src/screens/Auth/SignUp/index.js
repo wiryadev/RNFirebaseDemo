@@ -1,22 +1,39 @@
 import auth from '@react-native-firebase/auth';
+import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Alert, View } from 'react-native';
 import { ActivityIndicator, Appbar, Button, TextInput, useTheme } from 'react-native-paper';
 import Spacer from '../../../components/Spacer';
+import authValidationSchema from '../authValidationSchema'
+import TextField from '../../../components/TextField';
 
 const SignUpScreen = ({ navigation }) => {
 
+  const initialValues = {
+    email: '',
+    password: '',
+  }
+
   const theme = useTheme()
+
+  const form = useForm({
+    mode: 'all',
+    defaultValues: initialValues,
+    resolver: yupResolver(authValidationSchema)
+  })
+
+  const { formState, control, register, setValue, handleSubmit } = form
 
   const [isLoading, setLoading] = useState(false)
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  // const [email, setEmail] = useState('')
+  // const [password, setPassword] = useState('')
 
-  const onSignUp = () => {
+  const onSignUp = (values) => {
     setLoading(true)
     auth()
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(values.email, values.password)
       .then(() => {
         navigation.reset({
           index: 0,
@@ -49,22 +66,20 @@ const SignUpScreen = ({ navigation }) => {
         <Appbar.Content title="Sign Up" />
       </Appbar.Header>
       <View style={{ paddingHorizontal: 24, paddingTop: 32, }}>
-        <TextInput
-          mode="outlined"
+        <TextField
+          name="email"
           label="Email"
-          value={email}
           autoCapitalize='none'
           autoCorrect={false}
           keyboardType='email-address'
-          onChangeText={text => setEmail(text)}
+          control={control}
         />
         <Spacer height={16} />
-        <TextInput
-          mode="outlined"
+        <TextField
+          name="password"
           label="Password"
-          value={password}
           secureTextEntry
-          onChangeText={text => setPassword(text)}
+          control={control}
         />
         <Spacer height={48} />
         {isLoading
@@ -73,7 +88,7 @@ const SignUpScreen = ({ navigation }) => {
           />
           : <Button
             mode="contained-tonal"
-            onPress={onSignUp}
+            onPress={handleSubmit(onSignUp)}
           >
             Sign Up
           </Button>
