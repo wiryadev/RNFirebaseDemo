@@ -1,12 +1,11 @@
 import auth from '@react-native-firebase/auth';
-import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Alert, View } from 'react-native';
 import { ActivityIndicator, Appbar, Button, TextInput, useTheme } from 'react-native-paper';
 import Spacer from '../../../components/Spacer';
-import authValidationSchema from '../authValidationSchema'
 import TextField from '../../../components/TextField';
+import Form from '../form';
 
 const SignUpScreen = ({ navigation }) => {
 
@@ -17,18 +16,7 @@ const SignUpScreen = ({ navigation }) => {
 
   const theme = useTheme()
 
-  const form = useForm({
-    mode: 'all',
-    defaultValues: initialValues,
-    resolver: yupResolver(authValidationSchema)
-  })
-
-  const { formState, control, register, setValue, handleSubmit } = form
-
   const [isLoading, setLoading] = useState(false)
-
-  // const [email, setEmail] = useState('')
-  // const [password, setPassword] = useState('')
 
   const onSignUp = (values) => {
     setLoading(true)
@@ -66,33 +54,12 @@ const SignUpScreen = ({ navigation }) => {
         <Appbar.Content title="Sign Up" />
       </Appbar.Header>
       <View style={{ paddingHorizontal: 24, paddingTop: 32, }}>
-        <TextField
-          name="email"
-          label="Email"
-          autoCapitalize='none'
-          autoCorrect={false}
-          keyboardType='email-address'
-          control={control}
+        <Form 
+        buttonLabel="Sign Up"
+        initialValues={initialValues}
+        onSubmit={onSignUp}
+        isLoading={isLoading}
         />
-        <Spacer height={16} />
-        <TextField
-          name="password"
-          label="Password"
-          secureTextEntry
-          control={control}
-        />
-        <Spacer height={48} />
-        {isLoading
-          ? <ActivityIndicator
-            animating
-          />
-          : <Button
-            mode="contained-tonal"
-            onPress={handleSubmit(onSignUp)}
-          >
-            Sign Up
-          </Button>
-        }
       </View>
     </View>
   )
