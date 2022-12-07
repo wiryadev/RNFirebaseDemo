@@ -1,10 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { Alert, View } from 'react-native';
-import { ActivityIndicator, Appbar, Button, TextInput, useTheme } from 'react-native-paper';
-import Spacer from '../../../components/Spacer';
-import TextField from '../../../components/TextField';
+import { Appbar, useTheme } from 'react-native-paper';
 import Form from '../form';
 
 const SignUpScreen = ({ navigation }) => {
@@ -54,11 +51,11 @@ const SignUpScreen = ({ navigation }) => {
         <Appbar.Content title="Sign Up" />
       </Appbar.Header>
       <View style={{ paddingHorizontal: 24, paddingTop: 32, }}>
-        <Form 
-        buttonLabel="Sign Up"
-        initialValues={initialValues}
-        onSubmit={onSignUp}
-        isLoading={isLoading}
+        <Form
+          buttonLabel="Sign Up"
+          initialValues={initialValues}
+          onSubmit={onSignUp}
+          isLoading={isLoading}
         />
       </View>
     </View>

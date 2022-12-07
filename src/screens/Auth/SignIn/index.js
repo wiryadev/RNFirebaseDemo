@@ -1,22 +1,25 @@
 import auth from '@react-native-firebase/auth';
 import React, { useState } from 'react';
 import { Alert, View } from 'react-native';
-import { ActivityIndicator, Appbar, Button, TextInput, useTheme } from 'react-native-paper';
+import { Appbar, Button, useTheme } from 'react-native-paper';
 import Spacer from '../../../components/Spacer';
+import Form from '../form';
 
 const SignInScreen = ({ navigation }) => {
+
+  const initialValues = {
+    email: '',
+    password: '',
+  }
 
   const theme = useTheme()
 
   const [isLoading, setLoading] = useState(false)
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const onSignIn = () => {
+  const onSignIn = (values) => {
     setLoading(true)
     auth()
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(values.email, values.password)
       .then(() => {
         navigation.replace('HomeScreen')
       })
@@ -46,35 +49,12 @@ const SignInScreen = ({ navigation }) => {
         <Appbar.Content title="Sign In" />
       </Appbar.Header>
       <View style={{ paddingHorizontal: 24, paddingTop: 32, }}>
-        <TextInput
-          mode="outlined"
-          label="Email"
-          value={email}
-          autoCapitalize='none'
-          autoCorrect={false}
-          keyboardType='email-address'
-          onChangeText={text => setEmail(text)}
+        <Form
+          buttonLabel="Sign In"
+          initialValues={initialValues}
+          onSubmit={onSignIn}
+          isLoading={isLoading}
         />
-        <Spacer height={16} />
-        <TextInput
-          mode="outlined"
-          label="Password"
-          value={password}
-          secureTextEntry
-          onChangeText={text => setPassword(text)}
-        />
-        <Spacer height={48} />
-        {isLoading
-          ? <ActivityIndicator
-            animating
-          />
-          : <Button
-            mode="contained-tonal"
-            onPress={onSignIn}
-          >
-            Sign In
-          </Button>
-        }
         <Spacer height={16} />
         <Button
           mode="text"
