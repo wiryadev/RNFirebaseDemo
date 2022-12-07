@@ -2,7 +2,7 @@ import auth from '@react-native-firebase/auth';
 import React, { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
-import Form from '../form';
+import Form from './form';
 
 const SignUpScreen = ({ navigation }) => {
 
