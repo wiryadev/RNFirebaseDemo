@@ -7,6 +7,7 @@ const HomeScreen = ({ navigation }) => {
 
   const [user, setUser] = useState(null)
   const [inboxes, setInboxes] = useState([])
+  const [loading, setLoading] = useState(true)
 
   function onAuthStateChanged(user) {
     retrieveUserData(user.uid)
@@ -33,21 +34,20 @@ const HomeScreen = ({ navigation }) => {
       .on('value', snapshot => {
         snapshot.forEach(item => {
           fireDb.ref(`users/${item.key}`)
-          .once('value')
-          .then(userSnapshot => {
-            temps.push({
-              id: item.key,
-              lastMessage: item.val().lastMessage,
-              lastMessageAt: item.val().lastMessageAt,
-              roomId: item.val().roomId,
-              username: userSnapshot.val().name,
+            .once('value')
+            .then(userSnapshot => {
+              temps.push({
+                id: item.key,
+                lastMessage: item.val().lastMessage,
+                lastMessageAt: item.val().lastMessageAt,
+                roomId: item.val().roomId,
+                username: userSnapshot.val().name,
+              })
             })
-          })
         })
-        
-        console.log(`inboxes`, temps)
       })
 
+    if (temps) setLoading(false)
     setInboxes(temps)
   }
 
@@ -72,6 +72,7 @@ const HomeScreen = ({ navigation }) => {
       <HomeDetail
         user={user}
         inboxes={inboxes}
+        isLoading={loading}
         onSignOut={onSignOut}
         onAddButton={onAddButton}
       />
