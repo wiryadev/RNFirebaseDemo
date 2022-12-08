@@ -1,12 +1,15 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Appbar, Button, useTheme } from 'react-native-paper'
+import { FlatList, View } from 'react-native'
+import { Appbar, Button, Text, useTheme } from 'react-native-paper'
 
 const HomeDetail = ({
   user,
+  inboxes,
   onSignOut,
 }) => {
   const theme = useTheme()
+
+  console.log('Detail', inboxes)
 
   return (
     <View
@@ -21,6 +24,19 @@ const HomeDetail = ({
           onPress={onSignOut}
         />
       </Appbar.Header>
+      <FlatList
+        data={inboxes || []}
+        // keyExtractor={(item) => item.id}
+        ListEmptyComponent={() => (
+          <View style={{ flex: 1, padding: 32, alignItems: 'center' }}>
+            <Text>Data is Empty</Text>
+          </View>
+        )}
+        renderItem={
+          ({ item }) => (
+            <Text>{item.id}</Text>
+          )}
+      />
     </View>
   )
 }
