@@ -1,12 +1,13 @@
 import React from 'react'
-import { FlatList, View } from 'react-native'
-import { Appbar, Button, Text, useTheme } from 'react-native-paper'
+import { FlatList, StyleSheet, View } from 'react-native'
+import { Appbar, Button, FAB, Text, useTheme } from 'react-native-paper'
 import ChatItem from '../../components/ChatItem'
 
 const HomeDetail = ({
   user,
   inboxes,
   onSignOut,
+  onAddButton,
 }) => {
   const theme = useTheme()
 
@@ -38,8 +39,22 @@ const HomeDetail = ({
             <ChatItem chat={item} />
           )}
       />
+      <FAB
+        icon="plus"
+        style={styles.fab}
+        onPress={onAddButton}
+      />
     </View>
   )
 }
 
 export default HomeDetail
+
+const styles = StyleSheet.create({
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
+})

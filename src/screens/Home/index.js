@@ -51,6 +51,10 @@ const HomeScreen = ({ navigation }) => {
     setInboxes(temps)
   }
 
+  const onAddButton = () => {
+    console.log('Pressed')
+  }
+
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
     return subscriber
@@ -69,6 +73,7 @@ const HomeScreen = ({ navigation }) => {
         user={user}
         inboxes={inboxes}
         onSignOut={onSignOut}
+        onAddButton={onAddButton}
       />
     )
   }
