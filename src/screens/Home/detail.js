@@ -1,6 +1,7 @@
 import React from 'react'
 import { FlatList, View } from 'react-native'
 import { Appbar, Button, Text, useTheme } from 'react-native-paper'
+import ChatItem from '../../components/ChatItem'
 
 const HomeDetail = ({
   user,
@@ -26,7 +27,7 @@ const HomeDetail = ({
       </Appbar.Header>
       <FlatList
         data={inboxes || []}
-        // keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id}
         ListEmptyComponent={() => (
           <View style={{ flex: 1, padding: 32, alignItems: 'center' }}>
             <Text>Data is Empty</Text>
@@ -34,7 +35,7 @@ const HomeDetail = ({
         )}
         renderItem={
           ({ item }) => (
-            <Text>{item.id}</Text>
+            <ChatItem chat={item} />
           )}
       />
     </View>

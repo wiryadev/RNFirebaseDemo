@@ -33,24 +33,20 @@ const HomeScreen = ({ navigation }) => {
       .once('value')
       .then(snapshot => {
         snapshot.forEach(item => {
-          temps.push({
-            id: item.key,
-            data: item.val(),
+          fireDb.ref(`users/${item.key}`)
+          .once('value')
+          .then(userSnapshot => {
+            temps.push({
+              id: item.key,
+              lastMessage: item.val().lastMessage,
+              lastMessageAt: item.val().lastMessageAt,
+              roomId: item.val().roomId,
+              username: userSnapshot.val().name,
+            })
           })
         })
         
         console.log(`inboxes`, temps)
-        // snapshot.key.forEach(item => {
-        //   fireDb.ref(`inboxes/${userId}/${item}`)
-        //     .once('value')
-        //     .then(inboxSnapshot => {
-        //       console.log('snapshot', inboxSnapshot)
-        //       temps.push({
-        //         id: item,
-        //         inbox: inboxSnapshot.val()
-        //       })
-        //     })
-        // })
       })
 
     setInboxes(temps)
