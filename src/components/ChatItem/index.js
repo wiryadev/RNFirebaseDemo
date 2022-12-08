@@ -6,7 +6,7 @@ const ChatItem = ({ chat }) => {
     <Card.Title
       title={chat.username}
       subtitle={chat.lastMessage}
-      left={(props) => <Avatar.Icon {...props} icon="folder" />}
+      left={(props) => <Avatar.Icon {...props} icon="account" />}
     />
   )
 }
