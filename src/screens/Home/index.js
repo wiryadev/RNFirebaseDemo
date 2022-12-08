@@ -30,8 +30,7 @@ const HomeScreen = ({ navigation }) => {
     const temps = []
 
     fireDb.ref(`inboxes/${userId}`)
-      .once('value')
-      .then(snapshot => {
+      .on('value', snapshot => {
         snapshot.forEach(item => {
           fireDb.ref(`users/${item.key}`)
           .once('value')
