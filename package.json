@@ -17,6 +17,7 @@
     "@react-native-firebase/database": "^16.4.6",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
+    "dayjs": "^1.11.7",
     "react": "18.1.0",
     "react-hook-form": "^7.40.0",
     "react-native": "0.70.6",

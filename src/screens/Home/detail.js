@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native'
 import { ActivityIndicator, Appbar, Button, FAB, Text, useTheme } from 'react-native-paper'
 import ChatItem from '../../components/ChatItem'
 
@@ -9,6 +9,8 @@ const HomeDetail = ({
   isLoading,
   onSignOut,
   onAddButton,
+  onRefresh,
+  onChatSelected,
 }) => {
   const theme = useTheme()
 
@@ -27,30 +29,22 @@ const HomeDetail = ({
           onPress={onSignOut}
         />
       </Appbar.Header>
-      {isLoading
-        ? <ActivityIndicator
-          size='large'
-          style={{
-            flex: 1,
-            alignContent: 'center',
-            justifyContent: 'center'
-          }}
-          animating
-        />
-        : <FlatList
-          data={inboxes || []}
-          keyExtractor={(item) => item.id}
-          ListEmptyComponent={() => (
-            <View style={{ flex: 1, padding: 32, alignItems: 'center' }}>
-              <Text>Data is Empty</Text>
-            </View>
-          )}
-          renderItem={
-            ({ item }) => (
-              <ChatItem chat={item} />
-            )}
-        />
-      }
+      <FlatList
+        data={inboxes}
+        keyExtractor={(item) => item.id}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={onRefresh}
+          />
+        }
+        renderItem={({ item }) => (
+          <ChatItem
+            chat={item}
+            onPress={onChatSelected}
+          />
+        )}
+      />
       <FAB
         icon="plus"
         style={styles.fab}

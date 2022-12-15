@@ -1,6 +1,6 @@
 import { FlatList, View } from 'react-native'
 import React from 'react'
-import { Appbar, Button, Text, useTheme } from 'react-native-paper'
+import { ActivityIndicator, Appbar, Button, Text, useTheme } from 'react-native-paper'
 import UserItem from '../../../components/UserItem'
 
 const Detail = ({
@@ -9,6 +9,7 @@ const Detail = ({
   onSelectId,
   onBackPress,
   onStartChat,
+  isLoading,
 }) => {
   const theme = useTheme()
 
@@ -22,24 +23,27 @@ const Detail = ({
         <Appbar.BackAction onPress={onBackPress} />
         <Appbar.Content title="Add New Chat" />
       </Appbar.Header>
-      <FlatList
-        data={users}
-        keyExtractor={(_, index) => `user-${index}`}
-        ListEmptyComponent={() => (
-          <View style={{
-            padding: 24
-          }}>
-            <Text>Welcome</Text>
-          </View>
-        )}
-        renderItem={({ item }) => (
-          <UserItem
-            data={item}
-            isSelected={selectedId === item.id}
-            onPress={() => onSelectId(item.id)}
-          />
-        )}
-      />
+      {isLoading
+        ? <ActivityIndicator size='large' />
+        : <FlatList
+          data={users}
+          keyExtractor={(_, index) => `user-${index}`}
+          ListEmptyComponent={() => (
+            <View style={{
+              padding: 24
+            }}>
+              <Text>Welcome</Text>
+            </View>
+          )}
+          renderItem={({ item }) => (
+            <UserItem
+              data={item}
+              isSelected={selectedId === item.id}
+              onPress={() => onSelectId(item.id)}
+            />
+          )}
+        />
+      }
       {!!selectedId &&
         <Button
           onPress={onStartChat}

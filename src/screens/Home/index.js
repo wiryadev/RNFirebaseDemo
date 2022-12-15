@@ -9,9 +9,16 @@ const HomeScreen = ({ navigation }) => {
   const [inboxes, setInboxes] = useState([])
   const [loading, setLoading] = useState(true)
 
-  function onAuthStateChanged(user) {
-    retrieveUserData(user.uid)
-    getInboxes(user.uid)
+  // function onAuthStateChanged(user) {
+  //   retrieveUserData(user.uid)
+  //   getInboxes(user.uid)
+  // }
+
+  const onRefresh = () => {
+    setInboxes([])
+    const userId = auth().currentUser?.uid
+    retrieveUserData(userId)
+    getInboxes(userId)
   }
 
   const retrieveUserData = (userId) => {
@@ -25,39 +32,47 @@ const HomeScreen = ({ navigation }) => {
           email: snapshot.val().email,
         })
       })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   const getInboxes = (userId) => {
-    const temps = []
-
     fireDb.ref(`inboxes/${userId}`)
-      .on('value', snapshot => {
+      .on('value', async snapshot => {
         snapshot.forEach(item => {
           fireDb.ref(`users/${item.key}`)
             .once('value')
             .then(userSnapshot => {
-              temps.push({
+              const newData = {
                 id: item.key,
                 lastMessage: item.val().lastMessage,
                 lastMessageAt: item.val().lastMessageAt,
                 roomId: item.val().roomId,
                 username: userSnapshot.val().name,
-              })
+              }
+              setInboxes(prevData => [
+                ...prevData, newData
+              ])
             })
         })
       })
-
-    if (temps) setLoading(false)
-    setInboxes(temps)
   }
 
   const onAddButton = () => {
     navigation.navigate('CreateChatScreen')
   }
 
+  const onChatSelected = (userId) => {
+    navigation.navigate('RoomChatScreen', {
+      selectedId: userId,
+    })
+  }
+
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
-    return subscriber
+    onRefresh()
+    // const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
+    // return subscriber
   }, [])
 
 
@@ -75,6 +90,8 @@ const HomeScreen = ({ navigation }) => {
         isLoading={loading}
         onSignOut={onSignOut}
         onAddButton={onAddButton}
+        onRefresh={onRefresh}
+        onChatSelected={onChatSelected}
       />
     )
   }
