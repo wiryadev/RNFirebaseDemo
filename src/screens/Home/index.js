@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
   }
 
   const onAddButton = () => {
-    console.log('Pressed')
+    navigation.navigate('CreateChatScreen')
   }
 
   useEffect(() => {
