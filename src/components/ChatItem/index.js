@@ -5,9 +5,10 @@ const ChatItem = ({
   chat,
   onPress,
 }) => {
+  console.log('chat', chat)
   return (
     <Card
-      onPress={() => onPress(chat.userId)}
+      onPress={() => onPress(chat.id, chat.roomId)}
     >
       <Card.Title
         title={chat.username}

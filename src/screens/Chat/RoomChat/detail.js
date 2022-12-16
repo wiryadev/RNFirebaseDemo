@@ -6,8 +6,8 @@ import RightBubble from '../../../components/ChatBubble/RightBubble'
 import Spacer from '../../../components/Spacer'
 
 const Detail = ({
-  chat,
-  onChatChange,
+  message,
+  onMessageChange,
   onBackPress,
   onSendChat,
 }) => {
@@ -43,8 +43,8 @@ const Detail = ({
       <TextInput
         mode='outlined'
         placeholder='Chat'
-        value={chat}
-        onChangeText={text => onChatChange(text)}
+        value={message}
+        onChangeText={text => onMessageChange(text)}
         textColor={theme.colors.onSecondaryContainer}
         right={
           <TextInput.Icon

@@ -63,9 +63,10 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('CreateChatScreen')
   }
 
-  const onChatSelected = (userId) => {
+  const onChatSelected = (userId, roomId) => {
     navigation.navigate('RoomChatScreen', {
-      selectedId: userId,
+      userId: userId,
+      roomId: roomId,
     })
   }
 
