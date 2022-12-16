@@ -17,17 +17,19 @@ const CreateChatScreen = ({ navigation }) => {
   }
 
   const onStartChat = () => {
+    const dateForRoomId = new Date().getTime()
     setLoading(true)
     fireDb.ref(`/inboxes/${auth().currentUser?.uid}/${selectedId}`)
       .set({
         lastMessage: '',
         lastMessageAt: dayjs.utc().format(),
-        roomId: new Date().getTime(),
+        roomId: dateForRoomId,
         userId: selectedId,
       })
       .then(() => {
         navigation.replace('RoomChatScreen', {
-          selectedId: selectedId,
+          friendUserId: selectedId,
+          roomId: dateForRoomId,
         })
       })
       .finally(() => {

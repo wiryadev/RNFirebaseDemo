@@ -8,15 +8,15 @@ const HomeScreen = ({ navigation }) => {
   const [user, setUser] = useState(null)
   const [inboxes, setInboxes] = useState([])
   const [loading, setLoading] = useState(true)
+  const userId = auth().currentUser?.uid
 
-  const onRefresh = () => {
-    setInboxes([])
-    const userId = auth().currentUser?.uid
-    retrieveUserData(userId)
-    getInboxes(userId)
-  }
+  // const onRefresh = () => {
+  //   setInboxes([])
+  //   retrieveUserData()
+  //   getInboxes()
+  // }
 
-  const retrieveUserData = (userId) => {
+  const retrieveUserData = () => {
     console.log('userId', userId)
     fireDb.ref(`users/${userId}`)
       .once('value')
@@ -32,27 +32,27 @@ const HomeScreen = ({ navigation }) => {
       })
   }
 
-  const getInboxes = (userId) => {
-    fireDb.ref(`inboxes/${userId}`)
-      .on('value', async snapshot => {
-        snapshot.forEach(item => {
-          fireDb.ref(`users/${item.key}`)
-            .once('value')
-            .then(userSnapshot => {
-              const newData = {
-                id: item.key,
-                lastMessage: item.val().lastMessage,
-                lastMessageAt: item.val().lastMessageAt,
-                roomId: item.val().roomId,
-                username: userSnapshot.val().name,
-              }
-              setInboxes(prevData => [
-                ...prevData, newData
-              ])
-            })
-        })
-      })
-  }
+  // const getInboxes = () => {
+  //   fireDb.ref(`inboxes/${userId}`)
+  //     .on('value', async snapshot => {
+  //       snapshot.forEach(item => {
+  //         fireDb.ref(`users/${item.key}`)
+  //           .once('value')
+  //           .then(userSnapshot => {
+  //             const newData = {
+  //               id: item.key,
+  //               lastMessage: item.val().lastMessage,
+  //               lastMessageAt: item.val().lastMessageAt,
+  //               roomId: item.val().roomId,
+  //               username: userSnapshot.val().name,
+  //             }
+  //             setInboxes(prevData => [
+  //               ...prevData, newData
+  //             ])
+  //           })
+  //       })
+  //     })
+  // }
 
   const onAddButton = () => {
     navigation.navigate('CreateChatScreen')
@@ -66,7 +66,34 @@ const HomeScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    onRefresh()
+    // onRefresh()
+    retrieveUserData()
+    const onValueChange = fireDb.ref(`inboxes/${userId}`)
+      .on('value', async snapshot => {
+        console.log('snapshot', snapshot)
+        setInboxes([])
+        snapshot.forEach(item => {
+          console.log('item', item)
+          fireDb.ref(`users/${item.key}`)
+            .once('value')
+            .then(userSnapshot => {
+              console.log('userSnapshot', userSnapshot)
+              const newData = {
+                id: item.key,
+                lastMessage: item.val().lastMessage,
+                lastMessageAt: item.val().lastMessageAt,
+                roomId: item.val().roomId,
+                username: userSnapshot.val().name,
+              }
+              setInboxes(prevData => [
+                ...prevData, newData
+              ])
+              console.log('inboxes', inboxes)
+            })
+        })
+      })
+
+      return () => fireDb.ref(`inboxes/${userId}`).off('value', onValueChange)
   }, [])
 
 
@@ -84,7 +111,7 @@ const HomeScreen = ({ navigation }) => {
         isLoading={loading}
         onSignOut={onSignOut}
         onAddButton={onAddButton}
-        onRefresh={onRefresh}
+        // onRefresh={onRefresh}
         onChatSelected={onChatSelected}
       />
     )
