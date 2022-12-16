@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, RefreshControl, StyleSheet, View } from 'react-native'
-import { ActivityIndicator, Appbar, Button, FAB, Text, useTheme } from 'react-native-paper'
+import { Appbar, FAB, useTheme } from 'react-native-paper'
 import ChatItem from '../../components/ChatItem'
 
 const HomeDetail = ({

@@ -1,14 +1,24 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Detail from './detail'
 
 const RoomChatScreen = ({ navigation }) => {
+
+  const [chat, setChat] = useState('')
+
   const onBackPress = () => {
     navigation.goBack()
   }
+
+  const onSendChat = () => {
+    console.log('pressed')
+  }
+
   return (
     <Detail
+      chat={chat}
+      onChatChange={setChat}
       onBackPress={onBackPress}
+      onSendChat={onSendChat}
     />
   )
 }
