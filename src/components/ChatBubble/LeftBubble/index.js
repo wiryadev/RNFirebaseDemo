@@ -1,8 +1,9 @@
 import { useWindowDimensions, View } from 'react-native'
 import React from 'react'
 import { Text, useTheme } from 'react-native-paper'
+import dayjs from 'dayjs'
 
-const LeftBubble = () => {
+const LeftBubble = ({ data }) => {
   const { width } = useWindowDimensions()
   const theme = useTheme()
 
@@ -29,7 +30,7 @@ const LeftBubble = () => {
               color: theme.colors.onSecondaryContainer,
             }}
           >
-            Test 123
+            {data.message}
           </Text>
         </View>
         <Text
@@ -39,7 +40,7 @@ const LeftBubble = () => {
             color: theme.colors.outline,
           }}
         >
-          12 Jun
+          {dayjs(data.createdAt).format('HH:mm')}
         </Text>
       </View>
     </View>

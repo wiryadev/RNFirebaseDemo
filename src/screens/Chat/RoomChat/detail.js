@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { FlatList, View } from 'react-native'
 import { Appbar, TextInput, useTheme } from 'react-native-paper'
@@ -6,6 +7,8 @@ import RightBubble from '../../../components/ChatBubble/RightBubble'
 import Spacer from '../../../components/Spacer'
 
 const Detail = ({
+  currentUserId,
+  chats = [],
   message,
   onMessageChange,
   onBackPress,
@@ -26,8 +29,7 @@ const Detail = ({
         <Appbar.Content title="Room Chat" />
       </Appbar.Header>
       <FlatList
-        data={[0, 1, 2, 3, 1, 2, 3, 1, 1, 2, 2, 3, 4, 2]}
-        inverted={true}
+        data={chats}
         contentContainerStyle={{
           flexGrow: 1,
           padding: 16,
@@ -35,9 +37,9 @@ const Detail = ({
         keyExtractor={(_, index) => `message-${index}`}
         ItemSeparatorComponent={() => <Spacer height={12} />}
         renderItem={({ item }) => (
-          (item % 2 !== 0)
-            ? <LeftBubble />
-            : <RightBubble />
+          (item.userId !== currentUserId)
+            ? <LeftBubble data={item} />
+            : <RightBubble data={item} />
         )}
       />
       <TextInput

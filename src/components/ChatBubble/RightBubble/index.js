@@ -1,10 +1,13 @@
 import { useWindowDimensions, View } from 'react-native'
 import React from 'react'
 import { Text, useTheme } from 'react-native-paper'
+import dayjs from 'dayjs'
 
-const RightBubble = () => {
+const RightBubble = ({ data }) => {
   const { width } = useWindowDimensions()
   const theme = useTheme()
+
+  console.log('message', data)
 
   return (
     <View
@@ -30,7 +33,7 @@ const RightBubble = () => {
               color: theme.colors.onPrimaryContainer,
             }}
           >
-            Test 123
+            {data.message}
           </Text>
         </View>
         <Text
@@ -40,7 +43,7 @@ const RightBubble = () => {
             color: theme.colors.outline,
           }}
         >
-          12 Jun
+          {dayjs(data.createdAt).format('HH:mm')}
         </Text>
       </View>
     </View>
