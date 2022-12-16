@@ -7,8 +7,6 @@ const RightBubble = ({ data }) => {
   const { width } = useWindowDimensions()
   const theme = useTheme()
 
-  console.log('message', data)
-
   return (
     <View
       style={{

@@ -9,11 +9,6 @@ const HomeScreen = ({ navigation }) => {
   const [inboxes, setInboxes] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // function onAuthStateChanged(user) {
-  //   retrieveUserData(user.uid)
-  //   getInboxes(user.uid)
-  // }
-
   const onRefresh = () => {
     setInboxes([])
     const userId = auth().currentUser?.uid
@@ -65,15 +60,13 @@ const HomeScreen = ({ navigation }) => {
 
   const onChatSelected = (userId, roomId) => {
     navigation.navigate('RoomChatScreen', {
-      userId: userId,
+      friendUserId: userId,
       roomId: roomId,
     })
   }
 
   useEffect(() => {
     onRefresh()
-    // const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
-    // return subscriber
   }, [])
 
 

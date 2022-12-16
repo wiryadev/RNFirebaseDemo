@@ -11,14 +11,17 @@ const RoomChatScreen = ({ route, navigation }) => {
 
   const [chats, setChats] = useState([])
   const [message, setMessage] = useState('')
-  const { roomId } = route.params
+  const { friendUserId, roomId } = route.params
   const currentUserId = auth().currentUser?.uid
+
+  console.log('friendUserId', friendUserId)
 
   const onBackPress = () => {
     navigation.goBack()
   }
 
   const onSendChat = () => {
+    const date = dayjs.utc().format()
     const newReference = fireDb.ref(`/inboxes/messages/${roomId}`).push()
     console.log('Auto generated key: ', newReference.key)
     newReference
@@ -26,20 +29,27 @@ const RoomChatScreen = ({ route, navigation }) => {
         userId: currentUserId,
         message: message,
         messageType: 'text',
-        createdAt: dayjs.utc().format(),
+        createdAt: date,
       })
       .then(() => {
+        updateInbox(date)
         setMessage('')
       })
+  }
+
+  const updateInbox = (date) => {
+    fireDb.ref(`/inboxes/${currentUserId}/${friendUserId}`)
+      .update({
+        lastMessage: message,
+        lastMessageAt: date,
+      })
+      .then(() => console.log('Data updated.'))
   }
 
   useEffect(() => {
     const onValueChange = fireDb.ref(`/inboxes/messages/${roomId}`)
       .on('value', async snapshot => {
         setChats([])
-        console.log('snapshot', snapshot)
-        console.log('snapshotVal', snapshot.val())
-        
         snapshot.forEach(childSnapshot => {
           console.log('child', childSnapshot)
           const newData = {
@@ -63,7 +73,7 @@ const RoomChatScreen = ({ route, navigation }) => {
 
   return (
     <Detail
-    currentUserId={currentUserId}
+      currentUserId={currentUserId}
       chats={chats}
       message={message}
       onMessageChange={setMessage}
