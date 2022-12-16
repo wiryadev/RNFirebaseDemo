@@ -9,7 +9,6 @@ const HomeDetail = ({
   isLoading,
   onSignOut,
   onAddButton,
-  // onRefresh,
   onChatSelected,
 }) => {
   const theme = useTheme()
@@ -32,12 +31,6 @@ const HomeDetail = ({
       <FlatList
         data={inboxes}
         keyExtractor={(item) => item.id}
-        // refreshControl={
-        //   <RefreshControl
-        //     refreshing={isLoading}
-        //     onRefresh={onRefresh}
-        //   />
-        // }
         renderItem={({ item }) => (
           <ChatItem
             chat={item}

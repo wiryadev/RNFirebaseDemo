@@ -8,6 +8,7 @@ import Spacer from '../../../components/Spacer'
 
 const Detail = ({
   currentUserId,
+  friend,
   chats = [],
   message,
   onMessageChange,
@@ -15,6 +16,8 @@ const Detail = ({
   onSendChat,
 }) => {
   const theme = useTheme()
+
+  console.log('user', friend)
 
   return (
     <View
@@ -26,7 +29,7 @@ const Detail = ({
         style={{ backgroundColor: theme.colors.primaryContainer }}
       >
         <Appbar.BackAction onPress={onBackPress} />
-        <Appbar.Content title="Room Chat" />
+        <Appbar.Content title={friend?.name} />
       </Appbar.Header>
       <FlatList
         data={chats}

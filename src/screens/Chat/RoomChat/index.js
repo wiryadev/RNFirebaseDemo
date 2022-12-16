@@ -9,6 +9,7 @@ dayjs.extend(utc)
 
 const RoomChatScreen = ({ route, navigation }) => {
 
+  const [friend, setFriend] = useState(null)
   const [chats, setChats] = useState([])
   const [message, setMessage] = useState('')
   const { friendUserId, roomId } = route.params
@@ -18,6 +19,18 @@ const RoomChatScreen = ({ route, navigation }) => {
 
   const onBackPress = () => {
     navigation.goBack()
+  }
+
+  const retrievFriendData = () => {
+    fireDb.ref(`users/${friendUserId}`)
+      .once('value')
+      .then(snapshot => {
+        setFriend({
+          uid: snapshot.key,
+          name: snapshot.val().name,
+          email: snapshot.val().email,
+        })
+      })
   }
 
   const onSendChat = () => {
@@ -47,6 +60,7 @@ const RoomChatScreen = ({ route, navigation }) => {
   }
 
   useEffect(() => {
+    retrievFriendData()
     const onValueChange = fireDb.ref(`/inboxes/messages/${roomId}`)
       .on('value', async snapshot => {
         setChats([])
@@ -74,6 +88,7 @@ const RoomChatScreen = ({ route, navigation }) => {
   return (
     <Detail
       currentUserId={currentUserId}
+      friend={friend}
       chats={chats}
       message={message}
       onMessageChange={setMessage}
